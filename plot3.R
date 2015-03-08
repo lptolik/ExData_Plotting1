@@ -1,0 +1,11 @@
+data<-read.csv('household_power_consumption.txt',header=TRUE,sep=';',na.strings='?',colClasses=c('character','character','numeric','numeric','numeric','numeric','numeric','numeric','numeric'))
+data$dt<-as.Date(data$Date,'%d/%m/%Y')
+dat<-subset(data,dt %in% c(as.Date('2007-02-01'),as.Date('2007-02-02')))
+dat$tm<-strptime(paste(dat$dt,dat$Time),"%Y-%m-%d %H:%M:%S")
+png('plot3.png')
+range(c(dat$Sub_metering_1,dat$Sub_metering_2,dat$Sub_metering_3))->yr
+plot(dat$tm,dat$Sub_metering_1,ylim = yr,type='l',col='black',main=NA,xlab="",ylab='Energy sub metering')
+lines(dat$tm,dat$Sub_metering_2,col='red')
+lines(dat$tm,dat$Sub_metering_3,col='blue')
+legend("topright",legend=c('Sub_metering_1','Sub_metering_2','Sub_metering_3'),col=c('black','red','blue'),lty=1)
+dev.off()
